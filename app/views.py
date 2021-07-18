@@ -5,7 +5,9 @@ from rest_framework.response import Response
 
 # from common.authentication import JWTAuthentication
 from core.models import Announce, Comment, Logement
-from .serializers import AnnounceSerializer, CommentSerializer,  LogementSerializer, VisitSerializer
+from .serializers import AnnounceSerializer, CommentSerializer, LogementSerializer, VisitSerializer, LocationSerializer
+
+import yagmail
 
 
 class AnnounceGenericAPIView(
@@ -33,12 +35,16 @@ class AnnounceGenericAPIView(
         return self.destroy(request, pk)
 
 
-class CommentGenericAPIView(generics.GenericAPIView):
+class CommentGenericAPIView(
+    generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin,
+    mixins.UpdateModelMixin, mixins.DestroyModelMixin
+):
     # authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
+    serializer_class = CommentSerializer
 
     def get(self, request, pk=None):
-        comments = Comment.objects.filter(announce_id=pk)
+        comments = Comment.objects.filter(announce_id=pk).order_by('-id')
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
@@ -74,7 +80,35 @@ class VisitGenericAPIView(
     # permission_classes = [IsAuthenticated]
     serializer_class = VisitSerializer
 
-    def post(self, request):
+    def post(self, request, pk):
+        announce = request.data['announce']
+        # email = request.data['email']
+        ide = request.data['client_visit']
+        message = "L'utilisateur d'ID {0} demande une visite pour l'annonce {1}!".format(ide, announce)
+        yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
+        yag.send("sagnolkamdem721@gmail.com", 'Demande de visit', message)
+
+        return self.create(request)
+
+    def put(self, request, pk):
+        return self.partial_update(request, pk)
+
+
+class LocationGenericAPIView(
+    generics.GenericAPIView, mixins.RetrieveModelMixin, mixins.ListModelMixin, mixins.CreateModelMixin,
+    mixins.UpdateModelMixin, mixins.DestroyModelMixin
+):
+    # authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+    serializer_class = LocationSerializer
+
+    def post(self, request, pk):
+        announce = request.data['announce']
+        ide = request.data['client']
+        message = "L'utilisateur d'ID {0} demande une Location pour l'annonce d'ID {1}!".format(ide, announce)
+        yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
+        yag.send("sagnolkamdem721@gmail.com", 'Demande de location', message)
+
         return self.create(request)
 
     def put(self, request, pk):

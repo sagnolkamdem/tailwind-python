@@ -26,14 +26,14 @@ from core.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email')
+        fields = ('id', 'username', 'email', 'numTel', 'first_name', 'last_name')
 
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'password')
+        fields = ('id', 'username', 'email', 'password', 'numTel', 'first_name', 'last_name')
         extra_kwargs = {'password':
                             {'write_only': True}
                         }
@@ -41,7 +41,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create_user(validated_data['username'],
                                         validated_data['email'],
-                                        validated_data['password'])
+                                        validated_data['password'],
+                                        numTel=validated_data['numTel'],
+                                        first_name=validated_data['first_name'],
+                                        last_name=validated_data['last_name'])
         return user
 
 
@@ -50,6 +53,7 @@ class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'password')
+
     username = serializers.CharField()
     password = serializers.CharField()
 
