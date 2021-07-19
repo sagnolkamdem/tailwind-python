@@ -79,10 +79,11 @@ class Announce(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="photos/", null=True, blank=True)
-    bailleur = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bailleur', default=1)
+    video = models.FileField(upload_to="videos/", null=True, blank=True)
+    proprietaire = models.ForeignKey(User, on_delete=models.CASCADE, related_name='proprietaire')
     manager = models.ForeignKey(User, on_delete=models.CASCADE, related_name='manager', default=1)
     quartier = models.CharField(max_length=200)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     ville = models.CharField(max_length=200)
     region = models.CharField(max_length=200, default="Littoral")
     available = models.BooleanField(default=True)
@@ -92,8 +93,22 @@ class Announce(models.Model):
         return "Announce number {0}".format(self.id)
 
 
+class Picture(models.Model):
+    p1 = models.ImageField(upload_to="photos/")
+    p2 = models.ImageField(upload_to="photos/")
+    p3 = models.ImageField(upload_to="photos/")
+    p4 = models.ImageField(upload_to="photos/")
+    p5 = models.ImageField(upload_to="photos/")
+    p6 = models.ImageField(upload_to="photos/")
+    announce = models.ForeignKey(Announce, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Picture of announce {0}".format(self.announce)
+
+
 class Comment(models.Model):
     author = models.CharField(max_length=200)
+    author_id = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     announce = models.ForeignKey(Announce, on_delete=models.CASCADE)
@@ -123,7 +138,7 @@ class Visit(models.Model):
     announce = models.ForeignKey(Announce, on_delete=models.CASCADE)
 
     def __str__(self):
-        return "Visit of {0} with {1}".format(self.client_visit.first_name, self.manager_visit.first_name)
+        return "Visit of {0}.".format(self.date_of_visit)
 
 
 class Location(models.Model):

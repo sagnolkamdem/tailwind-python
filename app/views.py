@@ -81,12 +81,12 @@ class VisitGenericAPIView(
     serializer_class = VisitSerializer
 
     def post(self, request, pk):
-        announce = request.data['announce']
-        # email = request.data['email']
-        ide = request.data['client_visit']
-        message = "L'utilisateur d'ID {0} demande une visite pour l'annonce {1}!".format(ide, announce)
-        yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
-        yag.send("sagnolkamdem721@gmail.com", 'Demande de visit', message)
+        # announce = request.data['announce']
+        # # email = request.data['email']
+        # ide = request.data['client_visit']
+        # message = "L'utilisateur d'ID {0} demande une visite pour l'annonce {1}!".format(ide, announce)
+        # yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
+        # yag.send("sagnolkamdem721@gmail.com", 'Demande de visit', message)
 
         return self.create(request)
 
@@ -103,11 +103,11 @@ class LocationGenericAPIView(
     serializer_class = LocationSerializer
 
     def post(self, request, pk):
-        announce = request.data['announce']
-        ide = request.data['client']
-        message = "L'utilisateur d'ID {0} demande une Location pour l'annonce d'ID {1}!".format(ide, announce)
-        yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
-        yag.send("sagnolkamdem721@gmail.com", 'Demande de location', message)
+        # announce = request.data['announce']
+        # ide = request.data['client']
+        # message = "L'utilisateur d'ID {0} demande une Location pour l'annonce d'ID {1}!".format(ide, announce)
+        # yag = yagmail.SMTP('sagnolkamdem721@gmail.com', 'usnmtqohthpsvatg')
+        # yag.send("sagnolkamdem721@gmail.com", 'Demande de location', message)
 
         return self.create(request)
 
