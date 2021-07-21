@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from core.models import User, Category, Announce, Logement, Location, Comment, Visit, Picture
+from core.models import User, Category, Announce, Logement, Location, Comment, Visit
 
 
 # Register your models here.
@@ -30,8 +30,6 @@ class AnnounceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Announce, AnnounceAdmin)
-
-admin.site.register(Picture)
 
 
 class LogementAdmin(admin.ModelAdmin):

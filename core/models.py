@@ -76,6 +76,7 @@ class Category(models.Model):
 
 class Announce(models.Model):
     title = models.CharField(max_length=200, unique=True)
+    number_of_views = models.IntegerField(default=0)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="photos/", null=True, blank=True)
@@ -91,19 +92,6 @@ class Announce(models.Model):
 
     def __str__(self):
         return "Announce number {0}".format(self.id)
-
-
-class Picture(models.Model):
-    p1 = models.ImageField(upload_to="photos/")
-    p2 = models.ImageField(upload_to="photos/")
-    p3 = models.ImageField(upload_to="photos/")
-    p4 = models.ImageField(upload_to="photos/")
-    p5 = models.ImageField(upload_to="photos/")
-    p6 = models.ImageField(upload_to="photos/")
-    announce = models.ForeignKey(Announce, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return "Picture of announce {0}".format(self.announce)
 
 
 class Comment(models.Model):
